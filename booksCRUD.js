@@ -29,6 +29,14 @@ export async function findBooksByName(collection, name) {
   return collection.find({ name }).toArray();
 }
 
+export async function updateBooksByName(collection, name, updatedFields) {
+  await collection.updateMany({ name }, { $set: updatedFields });
+}
+
+export async function deleteBooksByName(collection, name) {
+  await collection.deleteMany({name});
+}
+
 export async function executeBookCrudOperations() {
   const uri = process.env.DB_URI;
   let mongoClient;
@@ -40,6 +48,11 @@ export async function executeBookCrudOperations() {
 
     //console.log("CREATE Book");
     //await createBookDocument(collection);
+
+    console.log("UPDATE Book's author ");
+    await updateBooksByName(collection, "Percy Jackson & The Olympians", {
+      author: "Ronald Dahl",
+    });
     console.log(
       await findBooksByName(collection, "Percy Jackson & The Olympians")
     );
